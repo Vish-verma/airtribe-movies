@@ -21,6 +21,9 @@ const Movie = sequalize.define("movie", {
     type: DataTypes.STRING(20),
     defaultValue: "2D",
   },
+  certificate: {
+    type: DataTypes.STRING(20),
+  },
 });
 
 // Execute the sync command to run migrations
