@@ -24,3 +24,6 @@ The Curls to see the functionalities
 2. Get All Movies for a theatre on a particular date :  <code>curl --location 'http://localhost:3000/api/theatre/1?date=2023-05-04' \
 --header 'Content-Type: application/json'</code> 
 
+ORM Diagram for The DB:
+
+![ORM Screenshot](/public/image/ERD%20--%20SmartDraw%20-%20Google%20Chrome%2020-May-23%2011_20_34%20PM.png)
