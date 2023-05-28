@@ -1,5 +1,6 @@
 const express = require("express");
 const { connectToDB } = require("./src/configs/mysqldb");
+require("./src/models/index");
 const theatreRoutes = require("./src/routes/theatre");
 const bookingRoutes = require("./src/routes/booking");
 
