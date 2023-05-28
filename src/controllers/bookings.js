@@ -30,7 +30,13 @@ const getShowAvailableSeats = async (req, res) => {
 
     let cachedData = await getCache(`shows_${showId}_Availability`);
     if (cachedData) {
-      return res.status(200).json({ showId, availableSeats: cachedData.availableSeats,  isCachedData: true });
+      return res
+        .status(200)
+        .json({
+          showId,
+          availableSeats: cachedData.availableSeats,
+          isCachedData: true,
+        });
     }
 
     await sequalize.transaction(async (t) => {
@@ -50,7 +56,9 @@ const getShowAvailableSeats = async (req, res) => {
           tempAvailableSeats[seat] = false;
         });
       });
-      setCache(`shows_${showId}_Availability`, { availableSeats: tempAvailableSeats });
+      setCache(`shows_${showId}_Availability`, {
+        availableSeats: tempAvailableSeats,
+      });
       response.status(200).json({ showId, availableSeats: tempAvailableSeats });
     });
   } catch (error) {
@@ -62,19 +70,42 @@ const saveBooking = async (req, res) => {
   try {
     const { booking } = req.body;
     await sequalize.transaction(async (t) => {
+      //getting available seats
+      let availabilityCachedData = await getCache(
+        `shows_${booking.showId}_Availability`
+      );
+      let tempAvailability = availabilityCachedData?.availableSeats || {
+        ...AvailableSeats,
+      };
+
+      //checking if booked seats are available
+      let areSeatsAvailable = true;
+      booking.seats.split(",").forEach((seat) => {
+        if (!tempAvailability[seat]) {
+          areSeatsAvailable = false;
+        }
+      });
+
+      //if not available sending apt response
+      if (!areSeatsAvailable) {
+        response
+          .status(404)
+          .json({ message: "Seats are already booked. Please try another!" });
+      }
+      //if available storing booking data
       const bookingDetails = await Booking.create(booking, {
         transaction: t,
         lock: t.LOCK.UPDATE,
       });
 
-      let availabilityCachedData = await getCache(`shows_${booking.showId}_Availability`);
-      if(availabilityCachedData){
-        let tempAvailability = cachedData.availableSeats;
-        booking.seats.split(',').forEach(seat=>{
-            tempAvailability[seat] = false;
-        })
-        setCache(`shows_${booking.showId}_Availability`, { availableSeats: tempAvailability });
-      }
+      booking.seats.split(",").forEach((seat) => {
+        tempAvailability[seat] = false;
+      });
+
+      //updating cache data according to booked seats
+      setCache(`shows_${booking.showId}_Availability`, {
+        availableSeats: tempAvailability,
+      });
       response
         .status(200)
         .json({ message: "Show Booked Successfully", bookingDetails });

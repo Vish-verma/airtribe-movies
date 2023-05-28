@@ -26,6 +26,7 @@ const Booking = sequalize.define(
     seats: {
       type: DataTypes.STRING(200),
       allowNull: false,
+      unique: true
     },
   },
   {
