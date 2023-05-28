@@ -1,45 +1,39 @@
 const { sequalize } = require("../configs/mysqldb");
 const DataTypes = require("sequelize");
-const Theatre = require("./theatres");
-const Movie = require("./movies");
+const MovieTheatreMapping = require("./movieTheatreMappings");
 
 // Define the model by providing name of the table, it's columns, their datatypes and constraints.
 
-const MovieTheatreMapping = sequalize.define(
-  "movieTheatreMapping",
+const Booking = sequalize.define(
+  "booking",
   {
     id: {
       type: DataTypes.BIGINT,
       autoIncrement: true,
       primaryKey: true,
     },
-    theatreId: {
+    user_id: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
+    movieTheatreMappingId: {
       type: DataTypes.BIGINT,
       references: {
-        model: Theatre,
+        model: MovieTheatreMapping,
         key: "id",
       },
     },
-    movieId: {
-      type: DataTypes.BIGINT,
-      references: {
-        model: Movie,
-        key: "id",
-      },
-    },
-    date: {
-      type: DataTypes.DATEONLY,
-    },
-    time: {
-      type: DataTypes.TIME,
+    seats: {
+      type: DataTypes.STRING(200),
+      allowNull: false,
     },
   },
   {
-    indexes: [{ fields: ["theatreId"] }],
+    indexes: [{ fields: ["movieTheatreMappingId"] }],
   }
 );
 
 // Execute the sync command to run migrations
 // sequalize.sync()
 
-module.exports = MovieTheatreMapping;
+module.exports = Booking;

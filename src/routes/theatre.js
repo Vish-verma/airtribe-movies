@@ -1,4 +1,5 @@
 const express = require("express");
+require("../models/index");
 const Theatre = require("../models/theatres");
 const MovieTheatreMapping = require("../models/movieTheatreMappings");
 const router = express.Router();
