@@ -4,6 +4,7 @@ require("./src/models/index");
 const theatreRoutes = require("./src/routes/theatre");
 const bookingRoutes = require("./src/routes/booking");
 const movieRoutes = require("./src/routes/movie");
+const searchRoutes = require("./src/routes/search");
 
 require("dotenv").config();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use("/api/theatre", theatreRoutes);
 app.use("/api/booking", bookingRoutes);
 app.use("/api/movie", movieRoutes);
+app.use("/api/search", searchRoutes);
 
 app.get("/", (request, response) => {
   response.status(200).json({ message: "Hello World!" });
