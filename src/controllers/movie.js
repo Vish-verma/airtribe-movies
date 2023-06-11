@@ -63,4 +63,5 @@ const getMovieRatings = async (req,res) => {
 module.exports = {
   getAllMovies,
   getMovieById,
+  getMovieRatings
 };
