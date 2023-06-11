@@ -1,4 +1,5 @@
 const Sequalize = require("sequelize");
+const { ingestData } = require("./elasticSearchConfig");
 
 require("dotenv").config();
 
@@ -19,9 +20,12 @@ const connectToDB = async () => {
     // sequalize
     //   .sync()
     //   .then((result) => {
-    //     console.log(result);
+    //     console.log("Synced..");
     //   })
     //   .catch((err) => console.log(err));
+      let movies = await sequalize.query("Select * from movies");
+      ingestData(movies);
+
   } catch (error) {
     console.log(error);
   }

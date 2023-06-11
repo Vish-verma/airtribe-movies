@@ -10,6 +10,11 @@ The functionalities supported
 4. Get Available seats for a show
 5. Book the show with seats for the user.
 
+--Updated Functionalities 
+6.  Cache added for quick retreival 
+7.  GET API for comments | Ratings
+8.  API to search for movies
+
 packages to be installed
 
 express sequelize express
@@ -46,6 +51,23 @@ ORM Diagram for The DB:
     "movieTheatreMappingId": 45,
     "seats": "D1,D2,D3",
 }</code> 
+
+6. Get all movies : 
+<code>curl --location 'http://localhost:3000/api/movie/' \
+--header 'Content-Type: application/json'</code> 
+
+7. Get by movie ID : 
+<code>curl --location 'http://localhost:3000/api/movie/:movieId' \
+--header 'Content-Type: application/json'</code> 
+
+8. Get by movie ID : 
+<code>curl --location 'http://localhost:3000/api/movie/:movieId/ratings' \
+--header 'Content-Type: application/json'</code> 
+
+9. Search for movie with queryparams (search , language , genre , format) :
+<code>curl --location 'http://localhost:3000/api/search?searchQuery=""&language=""&genre=""&format=""' \
+--header 'Content-Type: application/json'</code> 
+
 
 ![ORM Screenshot](/public/image/ERD%20--%20SmartDraw%20-%20Google%20Chrome%2020-May-23%2011_20_34%20PM.png)
 
